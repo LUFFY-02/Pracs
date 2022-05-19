@@ -1,0 +1,133 @@
+#include<iostream>
+#include<string.h>
+#include<stdlib.h>
+using namespace std;
+struct data
+{  char name[30];
+    char name1[30];
+};
+class Dictionary
+{  int n,sum,x,c,i,j;
+    char na[30],na1[30];
+    data d[10];
+public:
+    Dictionary()
+    {  for(i=0;i<10;i++)
+        {  strcpy(d[i].name,"\0");   }
+    }
+    void insert();
+    void search();
+    void delet();
+    void display();
+};
+void Dictionary::insert()
+{
+    cout<<"\n ENTER NUMBER OF WORDS\n";
+    cin>>n;
+    for(j=0;j<n;j++)
+    {   cout<<"\n\n ENTER THE WORD \n";
+        cin>>na;
+        cout<<"\n ENTER THE MEANING OF THE WORD \n";
+        cin>>na1;
+        sum=0;
+        for(i=0;i<strlen(na);i++)
+        {   sum=sum+na[i];
+        }
+        x=(sum/strlen(na))%10;
+        cout<<x;
+        c=x;
+        while(1)
+        {
+
+            if(!strcmp(d[x].name,"\0"))
+            {   strcpy(d[x].name,na);
+                strcpy(d[x].name1,na1);
+                break;
+            }
+            x=(x+1)%10;
+            if(c==x)
+            {  cout<<"\n HASH TABLE IS FULL \n";
+                break;
+            }
+        }
+
+    }
+}
+void Dictionary::search()
+{  cout<<"\n ENTER THE WORD WHOSE MEANING YOU WANT \n";
+    cin>>na;
+
+    sum=0;
+    for(i=0;i<strlen(na);i++)
+    {   sum=sum+(int)na[i];
+    }
+    x=(sum/strlen(na))%10;
+    c=x;
+    while(1)
+    {
+        if(!strcmp(d[x].name,na))
+        {   cout<<"\n MEANING : "<<d[x].name<<"    ->   "<<d[x].name1;
+            break;
+        }
+        x=(x+1)%10;
+        if(c==x)
+        {  cout<<"\n WORD NOT FOUND  ";
+            break;
+        }
+    }
+}
+void Dictionary::delet()
+{  cout<<"\n ENTER THE WORD YOU WANT TO DELETE  :  \n";
+    cin>>na;
+    sum=0;
+    for(i=0;i<strlen(na);i++)
+    {   sum=sum+(int)na[i];
+    }
+    x=(sum/strlen(na))%10;
+    c=x;
+    while(1)
+    {
+        if(!strcmp(d[x].name,na))
+        {   cout<<"\n"<<d[x].name<<" word deleted";
+            strcpy(d[x].name,"\0");  strcpy(d[x].name1,"\0");
+            break;
+        }
+        x=(x+1)%10;
+        if(c==x)
+        {  cout<<"\n word not found\n";
+            break;
+        }
+    }
+}
+void Dictionary::display()
+{
+    for(int i=0;i<10;i++)
+    {
+        cout<<endl<<d[i].name<<" "<<d[i].name1;
+    }
+}
+int main()
+{
+    Dictionary h;  int n;
+    while(1)
+    {
+        cout<<"\n ---------------------------------- MENU ---------------------------------- ";
+        cout<<"\n 1. INSERT WORD AND ITS MEANING  ";
+        cout<<"\n 2. FIND MEANING  ";
+        cout<<"\n 3. DELETE WORD  ";
+        cout<<"\n 4. EXIT\n";
+        cin>>n;
+        switch(n)
+        {
+            case 1:   h.insert();
+                break;
+            case 2:   h.search();
+                break;
+            case 3:   h.delet();
+                break;
+            case 4: exit(0);
+            default: cout<<"\n WRONG CHOICE";
+        }
+    }
+    return 0;
+}

@@ -1,0 +1,186 @@
+// Binary Tree in C++
+
+#include <stdlib.h>
+#include <conio.h>
+#include <iostream>
+static int count = 0;
+using namespace std;
+
+struct node {
+    int data;
+    struct node *left;
+    struct node *right;
+};
+
+// New node creation
+struct node *newNode(int data) {
+    struct node *node = (struct node *)malloc(sizeof(struct node));
+
+    node->data = data;
+
+    node->left = NULL;
+    node->right = NULL;
+    return (node);
+}
+
+// Traverse Preorder
+void traversePreOrder(struct node *temp) {
+    if (temp != NULL) {
+        cout << " " << temp->data;
+        traversePreOrder(temp->left);
+        traversePreOrder(temp->right);
+    }
+}
+
+// Traverse Inorder
+void traverseInOrder(struct node *temp) {
+    if (temp != NULL) {
+        traverseInOrder(temp->left);
+        cout << " " << temp->data;
+        traverseInOrder(temp->right);
+    }
+}
+
+// Traverse Postorder
+void traversePostOrder(struct node *temp) {
+    if (temp != NULL) {
+        traversePostOrder(temp->left);
+        traversePostOrder(temp->right);
+        cout << " " << temp->data;
+    }
+}
+
+int heightt(node *root)
+{
+    int h = 0;
+    if(root != NULL)
+    {
+        int lHeight = heightt(root->left);
+        int rHeight = heightt(root->right);
+        int maxHeight = max(lHeight,rHeight);
+        h = maxHeight + 1;
+    }
+    return h;
+}
+
+void deleteTree(node* node)
+{
+    if (node == NULL) return;
+
+    /* first delete both subtrees */
+    deleteTree(node->left);
+    deleteTree(node->right);
+
+    /* then delete the node */
+    cout << "\n Deleting node: " << node->data;
+    delete node;
+}
+
+int countnodes(struct node *root)
+{
+    if(root != NULL)
+    {
+        countnodes(root->left);
+        count++;
+        countnodes(root->right);
+    }
+    return count;
+}
+
+node* cloneBinaryTree(node* root)
+{
+    // base case
+    if (root == NULL) {
+        return NULL;
+    }
+
+    // create a new node with the same data as the root node
+    node* root_copy = newNode(root->data);
+
+    // clone the left and right subtree
+    root_copy->left = cloneBinaryTree(root->left);
+    root_copy->right = cloneBinaryTree(root->right);
+
+    // return cloned root node
+    return root_copy;
+}
+
+int main() {
+
+    struct node *root = newNode(1);
+    root->left = newNode(2);
+
+    root->right = newNode(3);
+
+    root->left->left = newNode(4);
+    int h = heightt(root);
+
+    struct node* clone = cloneBinaryTree(root);
+    int h1 = heightt(clone);
+
+    int ch;
+    while (1)
+    {
+        cout << "\n<-------Menu------->" << endl;
+        cout << "1. Press 1 for all traversal" << endl;
+        cout << "2. Press 2 for the height of the tree" << endl;
+        cout << "3. Press 3 to create the clone of the tree and then erase all node in a original tree" << endl;
+        cout << "4. Press 4 check whether two trees are equal" << endl;
+        cout << "5. Press 5 for exit" << endl;
+
+        cout << "\nEnter your choice: ";
+        cin >> ch;
+
+        switch(ch)
+        {
+            case 1:
+                cout << "Preorder traversal: ";
+                traversePreOrder(root);
+                cout << "\nInorder traversal: ";
+                traverseInOrder(root);
+                cout << "\nPostorder traversal: ";
+                traversePostOrder(root);
+                break;
+
+            case 2:
+                cout << "\nHeight of the tree is " << h << endl;
+                break;
+
+            case 3:
+                cout << "Creating a Clone of the given binary tree and deleting the node of original binary tree:" << endl;
+
+                deleteTree(root);
+
+                cout << "\nInorder traversal of the cloned tree: ";
+                traverseInOrder(clone);
+
+                cout << "\nInorder traversal of the cloned tree: ";
+                traversePreOrder(clone);
+
+                cout << "\nInorder traversal of the cloned tree: ";
+                traversePostOrder(clone);
+
+                break;
+
+            case 4:
+                if (h != h1)
+                {
+                    cout << "Tress are not equal" << endl;
+                }
+                else
+                {
+                    cout << "Trees are equal" << endl;
+                }
+                break;
+
+            default:
+                cout << "Thank You!!" << endl;
+                return 0;
+
+
+
+
+        };
+
+    }
+}

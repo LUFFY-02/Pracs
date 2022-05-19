@@ -1,0 +1,119 @@
+#include <iostream>
+using namespace std;
+class node
+{
+    string name;
+    long int tel;
+    int id;
+public:
+    node()
+    {
+        tel = 0;
+        id = 0;
+    }
+    friend class hashing;
+};
+class hashing {
+    node data[100];
+    string n;
+    long int t;
+    int i, index;
+public:
+    hashing()
+    {
+        i = 0;
+        t = 0;
+    }
+    void create_record(int size)
+    {
+        cout << "\nEnter ID :   ";
+        cin>>i;
+        cout << "\nEnter NAME :     ";
+        cin>>n;
+        cout<< "\nEnter TELEPHONE :     ";
+        cin>>t;
+        index = i % size;
+        for (int j = 0; j < size; j++) {
+            if (data[index].id == 0) {
+                data[index].id = i;
+                data[index].name = n;
+                data[index].tel = t;
+                break;
+            }
+            else
+                index
+                        = (index + 1) % size;
+        }
+    }
+    void search_record(int size)
+    {
+        int index1, key, flag = 0;
+        cout<<"\n Enter the ID to be searched :     ";
+        cin>>key;
+        index1 = key % size;
+        for (int a = 0; a < size; a++) {
+            if (data[index1].id == key) {
+                flag = 1;
+                cout << "\nRecord found:    ";
+                cout << "\n\tID ";
+                cout << "\tNAME ";
+                cout << "\t\tTELEPHONE ";
+                cout << "\n\t"
+                     << data[index1].id
+                     << " \t"
+                     << data[index1].name
+                     << " \t"
+                     << data[index1].tel;
+                break;
+            }
+            else
+                index1
+                        = (index1 + 1) % size;
+        }
+        if (flag == 0)
+            cout << "\nRecord Not Found";
+    }
+    void display_record(int size)
+    {
+        cout << "\n\tID \tNAME";
+        cout << " \tTELEPHONE ";
+        for (int a = 0; a < size; a++) {
+            if (data[a].id != 0) {
+                cout << "\n\t"
+                     << data[a].id
+                     << " \t"
+                     << data[a].name
+                     << " \t"
+                     << data[a].tel<<"       ";
+            }
+        }
+    }
+};
+int main()
+{
+    hashing s;
+    int size = 10;
+    int n=5;
+    cout<<"------------   MENU  -----------\n1. Enter Record\t2. Search Record\t3. Display \n";
+    int choice;
+    cin>>choice;
+    switch(choice)
+    {
+        case 1:     cout << "\n1.CREATE record   \n";
+            int z;
+            cout<<"Number of Entries : ";
+            cin>>n;
+            while(n--){
+                s.create_record(size);}
+
+        case 2: s.search_record(size);
+
+        case 3:    cout << "\n\n--------------------2.DISPLAYING RECORD --------------------";
+            s.display_record(size);
+
+        default:
+            cout<<"EXITING";
+            break;
+    }
+    return 0;
+}
